@@ -22,19 +22,35 @@ class Roller:
         self.result = Label(len(SIDES))
         self.result.label.config(width=16)
 
+        self.clear_button = Button()
+        self.clear_button.button.config(text="Clear", width=8, command=self.clear)
+        self.clear_button.button.grid(column=len(SIDES)+1, row=1)
+
         self.window.mainloop()
 
     def roll_dice(self):
         result = 0
+        results = []
         for pool in self.dice_labels:
             if pool.label["text"]:
                 sub_result = 0
+                sub_results = []
                 dice_int = [int(x) for x in pool.label["text"].split("k")]
                 for _ in range(dice_int[0]):
-                    sub_result += rd.randrange(dice_int[1])
-                pool.label.config(text=f"{sub_result}")
-                result += sub_result
+                    roll = rd.randrange(1, dice_int[1])
+                    sub_result += roll
+                    sub_results.append(roll)
+                    results.append(roll)
+                pool.label.config(text=f"{sub_result} {sub_results}")
+        result = sum(results)
         self.result.label.config(text=f"{result}")
+
+    def clear(self):
+        for button in self.dice_buttons:
+            button.die_counter = 0
+        for label in self.dice_labels:
+            label.label.config(text="")
+        self.result.label.config(text="")
 
 
 class Button:
