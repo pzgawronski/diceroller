@@ -1,3 +1,4 @@
 from UI import Roller
 
-Roller()
+if __name__ == '__main__':
+    Roller()
