@@ -3,6 +3,7 @@ import random as rd
 
 FONT = ("Lato Semibold", 16, "normal")
 SIDES = [2, 4, 6, 8, 10, 100, 12, 20]
+MAX_DICE_POOL = 10
 
 
 class Roller:
@@ -29,25 +30,23 @@ class Roller:
         self.window.mainloop()
 
     def roll_dice(self):
-        result = 0
         results = []
         for pool in self.dice_labels:
             if pool.label["text"]:
-                sub_result = 0
                 sub_results = []
                 dice_int = [int(x) for x in pool.label["text"].split("k")]
                 for _ in range(dice_int[0]):
-                    roll = rd.randrange(1, dice_int[1])
-                    sub_result += roll
+                    roll = rd.randrange(dice_int[1])+1
                     sub_results.append(roll)
                     results.append(roll)
-                pool.label.config(text=f"{sub_result} {sub_results}")
+                pool.label.config(text=f"{sub_results}")
         result = sum(results)
         self.result.label.config(text=f"{result}")
 
     def clear(self):
         for button in self.dice_buttons:
             button.die_counter = 0
+            button.button.config(state="normal")
         for label in self.dice_labels:
             label.label.config(text="")
         self.result.label.config(text="")
@@ -71,13 +70,17 @@ class DiceButton(Button):
         self.button.grid(column=column, row=1)
 
     def add_die(self):
-        self.die_counter += 1
-        if self.die_counter:
-            self.roller.dice_labels[self.index].label.config(text=f"{self.die_counter}k{self.sides}")
+        if self.die_counter < MAX_DICE_POOL:
+            self.die_counter += 1
+            die_label = self.roller.dice_labels[self.index].label
+            die_label.config(text=f"{self.die_counter}k{self.sides}")
+        else:
+            die_button = self.roller.dice_buttons[self.index].button
+            die_button.config(state="disabled")
 
 
 class Label:
 
     def __init__(self, column: int):
-        self.label = tk.Label(text="", font=FONT, padx=10, pady=10, width=8)
+        self.label = tk.Label(text="", font=FONT, padx=10, pady=10, width=8, height=4, wraplength=75)
         self.label.grid(column=column, row=2)
