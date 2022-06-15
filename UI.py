@@ -89,6 +89,7 @@ class Roller:
         if reset_needed:
             self.clear()
 
+
 class Button:
 
     def __init__(self, column: int, row: int, text: str, command, wide=True):
