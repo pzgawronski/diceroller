@@ -1,0 +1,11 @@
+FONT = ("Lato Semibold", 16, "normal")
+RESULT_FONT = ("Lato Semibold", 32, "normal")
+DICE_MARKER = "k"
+SIDES = [2, 4, 6, 8, 10, 100, 12, 20]
+ROWS = len(SIDES)
+MAX_DICE_POOL = 10
+BTN_HEIGHT = 2
+BTN_WIDTH = BTN_HEIGHT * 2
+BTN_WIDE = BTN_HEIGHT * 4
+PAD = 5
+PAD_WINDOW = PAD*3
